@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#284ce8">
+  <meta name="description" content="Timestamp foto dinas Stasiun Kedunggedeh dengan petugas tersimpan di perangkat.">
+  <title>IMOCAM KDH</title>
+  <meta name="application-name" content="IMOCAM KDH">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="IMOCAM KDH">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+  <script src="pwa.js" defer></script>
+</head>
+<body>
+  <main>
+    <header>
+      <img id="brandLogo" alt="KAI" width="72" height="32">
+      <div class="app-title"><h1>IMOCAM KDH</h1><p>Timestamp Stasiun Kedunggedeh</p></div>
+      <button id="installApp" class="secondary install-button" type="button">Pasang aplikasi</button>
+    </header>
+    <div class="pwa-bar"><span id="pwaStatus" role="status" aria-live="polite">Menyiapkan aplikasi…</span><button id="updateApp" class="text-button" type="button" hidden>Perbarui aplikasi</button></div>
+    <details id="installHelp" class="install-help" hidden>
+      <summary>Cara memasang IMOCAM KDH</summary>
+      <p id="installInstructions">Android: buka lewat Chrome, ketuk menu ⋮, lalu pilih Instal aplikasi atau Tambahkan ke layar utama. iPhone: buka lewat Safari, ketuk Bagikan, lalu Tambahkan ke Layar Utama.</p>
+      <p class="hint">Buka tautan website dengan HTTPS untuk memasang aplikasi. Setelah status “Siap digunakan offline” muncul, aplikasi dapat dibuka tanpa internet.</p>
+    </details>
+    <div class="workspace">
+      <form id="settingsForm" autocomplete="off">
+        <section>
+          <h2>Petugas</h2>
+          <label for="savedOfficer">Petugas tersimpan</label>
+          <select id="savedOfficer"><option value="">Pilih petugas / isi baru</option></select>
+          <label for="officerName">Nama</label><input id="officerName" placeholder="Nama petugas" maxlength="60">
+          <div class="two-col">
+            <div><label for="role">Jabatan</label><select id="role"><option>KS</option><option>PPKA</option><option selected>PLR</option><option>PJL</option><option>OSC</option><option>PKD</option><option value="CUSTOM">Isi sendiri</option></select></div>
+            <div><label for="nipp">NIPP</label><input id="nipp" placeholder="Nomor pegawai" inputmode="numeric" maxlength="20"></div>
+          </div>
+          <div id="customRoleField" hidden><label for="customRole">Jabatan lainnya</label><input id="customRole" placeholder="Tulis jabatan" maxlength="20"></div>
+          <button id="saveOfficer" class="secondary full" type="button">Simpan petugas</button>
+          <p id="officerStatus" class="hint" role="status" aria-live="polite">Tersimpan di browser pada perangkat ini.</p>
+        </section>
+        <section>
+          <h2>Waktu foto</h2>
+          <label for="date">Tanggal</label><input id="date" type="date" min="1900-01-01" max="9999-12-31" required>
+          <div class="two-col">
+            <div><label for="shift">Dinas</label><select id="shift"><option value="PAGI">Pagi</option><option value="SIANG">Siang</option><option value="MALAM">Malam</option></select></div>
+            <div><label for="time">Jam (WIB) <span id="timeMode">Acak</span></label><input id="time" type="time" step="1" required></div>
+          </div>
+          <button id="randomTime" class="secondary full" type="button">Acak jam</button><p id="timeRange" class="hint"></p>
+        </section>
+        <details>
+          <summary>Alamat & koordinat</summary>
+          <label for="address">Alamat</label><textarea id="address" maxlength="160" rows="3">Jalan Raya Bojongsari, Kedungwaringin, Kec. Kedungwaringin, Kabupaten Bekasi, Jawa Barat 17540</textarea>
+          <div class="two-col"><div><label for="latitude">Lintang (S)</label><input id="latitude" value="-6.269375" inputmode="decimal"></div><div><label for="longitude">Bujur (E)</label><input id="longitude" value="107.258356" inputmode="decimal"></div></div>
+          <div class="two-col buttons"><button id="randomCoordinates" class="secondary" type="button">Acak 3 digit</button><button id="resetCoordinates" class="secondary" type="button">Titik awal</button></div>
+        </details>
+      </form>
+      <section class="photo-panel" aria-label="Foto dan pratinjau">
+        <div class="two-col buttons photo-buttons"><button id="uploadButton" class="primary" type="button">Unggah foto</button><button id="cameraButton" class="secondary" type="button">Buka kamera</button></div>
+        <input id="photoInput" type="file" accept="image/*" hidden>
+        <video id="video" autoplay muted playsinline aria-hidden="true"></video>
+        <div id="dropZone" class="stage"><div id="canvasWrap" class="canvas-wrap">
+          <canvas id="output" width="1200" height="1600" aria-label="Pratinjau foto dan timestamp rasio 3:4"></canvas>
+          <button id="emptyState" class="empty-state" type="button">Pilih foto untuk mulai<span>JPG, PNG, WebP · maksimal 30 MB</span></button>
+        </div></div>
+        <div id="cameraControls" hidden><div class="two-col buttons"><button id="capture" class="primary" type="button" disabled>Ambil foto</button><button id="closeCamera" class="secondary" type="button">Tutup kamera</button></div><button id="flipCamera" class="text-button" type="button">Ganti kamera depan / belakang</button><p id="compassStatus" class="hint">Kompas: menunggu sensor HP.</p></div>
+        <p id="photoHint" class="hint">Rasio 3:4. Geser foto untuk mengatur posisi.</p>
+        <label for="zoom" class="zoom-label">Ukuran foto <output id="zoomValue" for="zoom">100%</output></label>
+        <div class="zoom-row"><button id="zoomOut" class="small-button" type="button" aria-label="Perkecil foto">−</button><input id="zoom" type="range" min="50" max="300" value="100" step="1"><button id="zoomIn" class="small-button" type="button" aria-label="Perbesar foto">+</button><button id="resetCrop" class="small-button" type="button">Reset</button></div>
+        <p id="zoomHint" class="hint">100% mengisi bingkai.</p>
+        <button id="download" class="download full" type="button" disabled>Unduh JPG</button>
+        <p id="message" class="message" role="status" aria-live="polite"></p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

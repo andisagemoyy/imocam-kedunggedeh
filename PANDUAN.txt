@@ -1,0 +1,107 @@
+IMOCAM KDH — PWA TIMESTAMP STASIUN KEDUNGGEDEH
+================================================
+
+Paket ini adalah PWA siap diunggah, dengan ikon logo KAI dan nama IMOCAM KDH.
+Tidak memerlukan npm, database, API key, atau proses build.
+Paket ini berisi kode sumber PWA, bukan berkas installer .apk.
+
+ISI PAKET
+- index.html: halaman utama
+- style.css: tampilan
+- app.js: kamera, timestamp, kompas, dan penyimpanan petugas
+- pwa.js: pemasangan, status offline, dan pembaruan
+- sw.js: penyimpanan file aplikasi untuk penggunaan offline
+- manifest.webmanifest: nama, ikon, dan pengaturan aplikasi
+- icons/: ikon KAI untuk Android, iPhone, dan komputer
+- PANDUAN.txt: panduan ini
+
+CARA PALING MUDAH MEMASANG DI HP
+1. Ekstrak ZIP.
+2. Unggah semua ISI folder IMOCAM_KDH ke hosting HTTPS milikmu.
+   Sertakan folder icons dan file di dalamnya. Jangan unggah ZIP saja.
+   index.html harus berada pada folder yang menjadi halaman website.
+   GitHub Pages bisa dipakai; alamatnya biasanya berbentuk:
+   https://USERNAME.github.io/NAMA-REPOSITORY/
+3. Buka alamat website di Chrome Android, atau Safari iPhone.
+4. Tunggu tulisan "Siap digunakan offline".
+5. Android: tekan "Pasang aplikasi" dan ikuti dialog browser.
+   Jika dialog belum tersedia: menu Chrome ⋮ > Instal aplikasi /
+   Tambahkan ke layar utama. Nama menu bisa berbeda menurut browser.
+6. iPhone: Safari > Bagikan > Tambahkan ke Layar Utama > Tambah.
+   Jika tersedia, aktifkan "Buka sebagai app web".
+7. Buka IMOCAM KDH dari ikon di layar utama dan izinkan kamera saat diminta.
+
+Membuka index.html langsung (file://) hanya untuk melihat/memakai halaman.
+Pemasangan PWA dan persiapan offline memerlukan HTTPS atau localhost.
+Untuk mencoba di komputer: dari folder aplikasi jalankan
+  python -m http.server 8000
+lalu buka http://localhost:8000
+Alamat HTTP biasa melalui IP jaringan lokal belum memenuhi syarat di HP.
+
+PENGGUNAAN OFFLINE
+- Setelah aplikasi selesai disiapkan pertama kali, file aplikasi dapat
+  dibuka tanpa internet. Kamera, timestamp, dan data petugas memakai HP.
+- Foto saat ini hanya ada selama halaman terbuka. Unduh JPG sebelum
+  menutup atau memuat ulang aplikasi. Foto tidak menjadi riwayat otomatis.
+- File aplikasi dapat terhapus jika penyimpanan situs dihapus atau sistem
+  membersihkan cache. Jika itu terjadi, buka sekali lagi dengan internet.
+- Data petugas tersimpan di browser/aplikasi pada alamat website tersebut.
+  Data lama di file lokal/alamat lain tidak otomatis berpindah. Tetap
+  gunakan alamat website yang sama. Mode privat dapat membatasi penyimpanan.
+
+PETUGAS
+Isi nama, jabatan, dan NIPP, lalu tekan Simpan petugas.
+Jabatan tersedia: KS, PPKA, PLR, PJL, OSC, PKD, atau Isi sendiri.
+Beberapa petugas dapat disimpan. NIPP yang sama memperbarui petugas tersebut.
+Isian petugas terakhir dipulihkan saat aplikasi dibuka kembali.
+
+KAMERA DAN FOTO
+Buka kamera > Ambil foto. Kompas mengikuti sensor arah HP jika tersedia
+dan mendapat izin. Tanpa sensor kompas, foto tetap dapat diambil.
+Posisikan HP tegak. Ganti kamera depan/belakang melalui tombol yang tersedia.
+Unggah foto tetap tersedia sesuai kode yang diberikan; hasil unggahan
+tidak mendapatkan kompas tambahan.
+Foto JPG: rasio 3:4, 1200 x 1600, tanpa garis tepi.
+Geser foto untuk mengatur posisi, atur zoom 50–300%, atau tekan Reset.
+Gunakan foto asli yang belum diberi timestamp agar tulisan tidak bertumpuk.
+Kamera dan kompas bergantung pada perangkat, izin, dan dukungan browser.
+
+WAKTU DAN LOKASI
+Tanggal awal mengikuti waktu Jakarta (WIB). Tanggal dan jam bisa diisi manual.
+Acak jam mengikuti kode asli:
+- Pagi: 07.00.00–14.59.59
+- Siang: 15.00.00–21.59.59
+- Malam: 22.00.00–23.59.59
+Alamat dan koordinat bisa diubah melalui Alamat & koordinat.
+Acak 3 digit hanya mengubah tiga angka terakhir lintang dan bujur.
+Waktu/lokasi yang diisi manual atau diacak adalah isian pengguna,
+bukan verifikasi GPS atau waktu pemotretan dari perangkat.
+
+MEMPERBARUI KODE DI HOSTING
+1. Ubah file yang diperlukan.
+2. Naikkan APP_VERSION di sw.js, misalnya dari 'v1' menjadi 'v2'.
+3. Unggah kembali semua file ke alamat website yang sama.
+4. Buka aplikasi dengan internet. Jika versi baru sudah disiapkan, tombol
+   "Perbarui aplikasi" muncul. Unduh foto yang sedang diedit dahulu.
+5. Tekan Perbarui aplikasi; halaman akan dimuat ulang memakai versi baru.
+Pembaruan tidak menghapus daftar petugas di localStorage.
+Service worker ini hanya membersihkan cache IMOCAM KDH pada lingkupnya.
+
+JIKA MEMERLUKAN FILE APK ANDROID
+PWA ini dapat dipasang langsung dengan langkah di atas.
+Untuk menghasilkan installer APK melalui PWABuilder:
+1. Unggah paket ke HTTPS terlebih dahulu dan pastikan website berfungsi.
+2. Buka https://www.pwabuilder.com dan masukkan URL website.
+3. Ikuti pilihan pengemasan Android dan pengaturan penandatanganan paket.
+   Gunakan nama IMOCAM KDH; contoh ID aplikasi: id.andisa.imocamkdh.
+4. Untuk mode Trusted Web Activity tanpa bilah browser, verifikasi hubungan
+   aplikasi dan domain melalui Digital Asset Links sesuai petunjuk tool.
+   Sidik jari sertifikat harus sesuai dengan sertifikat APK yang dipakai.
+   Jangan mengisi nilai contoh sebagai sidik jari sertifikat sungguhan.
+Panduan ini belum menghasilkan atau menandatangani APK.
+
+REFERENSI
+https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable
+https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Offline_and_background_operation
+https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+https://docs.pwabuilder.com/
